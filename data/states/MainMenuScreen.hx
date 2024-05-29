@@ -2,9 +2,15 @@ import flixel.addons.display.FlxBackdrop;
 import flixel.text.FlxText;
 import flixel.text.FlxText.FlxTextBorderStyle;
 
+import funkin.menus.ModSwitchMenu;
+import funkin.editors.EditorPicker;
+
+import funkin.options.OptionsMenu;
+
 var menuItems:Array<String> = ['STORY MODE', 'FREEPLAY', 'OPTIONS', 'EXTRAS'];
-var curSelected = 0;
 var menuTexts:Array<FlxText> = [];
+var curSelected = 0;
+var canSwitch = true;
 
 var startX:Float = 10 * 6;
 var startY:Float = 16 * 11;
@@ -68,37 +74,76 @@ function create(){
 
 }
 
-
-function update (elapsed){
-
-    switch (curSelected){
-        case 0:
-            thumbnail.animation.frameIndex = 0;
-            selector.y = 220;
-        case 1:
-            thumbnail.animation.frameIndex = 1;
-            selector.y = 310;
-        case 2:
-            thumbnail.animation.frameIndex = 2;
-            selector.y = 410;
-        case 3:
-            thumbnail.animation.frameIndex = 3; 
-            selector.y = 500;
+function update (elapsed)
+{
+	if (FlxG.keys.justPressed.SEVEN)
+    {
+        persistentUpdate = false;
+        persistentDraw = true;
+        openSubState(new EditorPicker());
     }
     
-    if (FlxG.keys.justPressed.DOWN)
-        changeSelection(1);
-    if (FlxG.keys.justPressed.UP)
-        changeSelection(-1);
+    if (controls.SWITCHMOD)
+    {
+        openSubState(new ModSwitchMenu());
+        persistentUpdate = false;
+        persistentDraw = true;
+    }
 
+    
+    if (canSwitch)
+    {
+        if (controls.UP_P) changeSelect(-1);
+        if (controls.DOWN_P) changeSelect(1);
+        if (controls.ACCEPT) confirmSelect();
+    }
 }
 
-function changeSelection(change) 
-    {
-        curSelected += change;
+function changeSelect(change) 
+{
+    curSelected += change;
     
-        if (curSelected >= menuItems.length)
-            curSelected = 0;
-        if (curSelected <0)
-            curSelected = menuItems.length-1;
+    if (curSelected >= menuItems.length)
+        curSelected = 0;
+    if (curSelected <0)
+        curSelected = menuItems.length-1;
+
+    switch (menuItems[curSelected])
+    {
+        case 'STORY MODE':
+            thumbnail.animation.frameIndex = 0;
+            selector.y = 220;
+
+        case 'FREEPLAY':
+            thumbnail.animation.frameIndex = 1;
+            selector.y = 310;
+        
+        case 'OPTIONS':
+            thumbnail.animation.frameIndex = 2;
+            selector.y = 410;
+
+        case 'EXTRAS':
+            thumbnail.animation.frameIndex = 3;
+            selector.y = 500;
     }
+}
+
+function confirmSelect()
+{
+    canSwitch = false;
+
+    switch(menuItems[curSelected])
+    {
+        case 'STORY MODE':
+            FlxG.switchState(new StoryMenuState());
+
+        case 'FREEPLAY':
+            FlxG.switchState(new FreeplayState());
+
+        case 'OPTIONS':
+            FlxG.switchState(new OptionsMenu());
+
+        case 'EXTRAS':
+            FlxG.switchState(new FreeplayState());
+    }
+}

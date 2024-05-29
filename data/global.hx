@@ -30,7 +30,7 @@ function new(){
 
 
 static var redirectStates:Map<FlxState, String> = [
-	//TitleState => "TitleScreen",
+	TitleState => "TitleScreen",
     MainMenuState => "MainMenuScreen",
     //FreeplayState => "FreeplayScreen",
 ];
