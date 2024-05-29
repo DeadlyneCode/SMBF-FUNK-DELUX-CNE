@@ -1,8 +1,8 @@
 import flixel.addons.display.FlxBackdrop;
 import flixel.util.FlxTimer;
 
-function create(){
-		
+function create()
+{
     disclaimer = new FlxSprite().loadGraphic(Paths.image('menus/intro/disclaimer'));
 	disclaimer.setGraphicSize(Std.int(disclaimer.width * 6));
 	disclaimer.updateHitbox();
