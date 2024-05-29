@@ -1,6 +1,6 @@
 <!DOCTYPE codename-engine-stage>
 <stage zoom="6" name="overworld" folder="stages/overworld/">
 	<sprite name="bg" sprite="bg" antialiasing="false"/>
-	<dad y="-5"/>
-	<boyfriend x="50" y="-5"/>
+	<dad y="40" x="27"/>
+	<boyfriend x="90" y="41"/>
 </stage>

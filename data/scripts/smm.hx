@@ -80,17 +80,22 @@ function postCreate() {
     healthBarBG.visible = false;
     iconP1.visible = false;
     iconP2.visible = false;
-
-	if (enablePixelGameOver) {
-		gameOverSong = "pixel/gameOver";
-		lossSFX = "pixel/gameOverSFX";
-		retrySFX = "pixel/gameOverEnd";
-	}
 }
 
-//function create(){
-//
-//}
+function create(){
+    black1 = new FlxSprite();
+    black1.makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 0.11), FlxColor = 0xFF000000);
+	black1.y = 654;
+	black1.cameras = [camHUD];
+    PlayState.instance.insert(PlayState.instance.members.indexOf(healthBar)+1, black1);
+
+	black2 = new FlxSprite();
+    black2.makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 0.25), FlxColor = 0xFF000000);
+	black2.y = -12;
+	black2.cameras = [camHUD];
+    PlayState.instance.insert(PlayState.instance.members.indexOf(healthBar)+1, black2);
+
+}
 
 function update(){
 	health = 1;
