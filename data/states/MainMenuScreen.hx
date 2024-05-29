@@ -90,6 +90,7 @@ function update (elapsed)
     
     if (canSwitch)
     {
+        if (controls.BACK) backTitle();
         if (controls.UP_P) changeSelect(-1);
         if (controls.DOWN_P) changeSelect(1);
         if (controls.ACCEPT) confirmSelect();
@@ -130,4 +131,10 @@ function confirmSelect()
         case 'EXTRAS':
             FlxG.switchState(new FreeplayState());
     });
+}
+
+function backTitle()
+{
+    canSwitch = false;
+    FlxG.switchState(new TitleState());
 }
