@@ -72,6 +72,7 @@ function create(){
             menuTexts.push(menuTextWhite);
         }
 
+    changeSelect(0);
 }
 
 function update (elapsed)
@@ -108,24 +109,8 @@ function changeSelect(change)
     if (curSelected <0)
         curSelected = menuItems.length-1;
 
-    switch (menuItems[curSelected])
-    {
-        case 'STORY MODE':
-            thumbnail.animation.frameIndex = 0;
-            selector.y = 220;
-
-        case 'FREEPLAY':
-            thumbnail.animation.frameIndex = 1;
-            selector.y = 310;
-        
-        case 'OPTIONS':
-            thumbnail.animation.frameIndex = 2;
-            selector.y = 410;
-
-        case 'EXTRAS':
-            thumbnail.animation.frameIndex = 3;
-            selector.y = 500;
-    }
+    thumbnail.animation.frameIndex = curSelected;
+    selector.y = 220 + curSelected * spacing;
 }
 
 function confirmSelect()
