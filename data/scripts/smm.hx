@@ -5,17 +5,7 @@ public var pixelNotesForBF = true;
 public var pixelNotesForDad = true;
 public var pixelSplashes = true;
 public var enablePixelUI = true;
-public var enablePixelGameOver = true;
-public var enableCameraHacks = Options.week6PixelPerfect;
-public var enablePauseMenu = true;
-public var isSpooky = false;
 
-var oldStageQuality = FlxG.game.stage.quality;
-static var daPixelZoom = 6;
-
-/**
- * UI
- */
 function onNoteCreation(event) {
 	if (event.note.strumLine == playerStrums && !pixelNotesForBF) return;
 	if (event.note.strumLine == cpuStrums && !pixelNotesForDad) return;
@@ -24,11 +14,11 @@ function onNoteCreation(event) {
 
 	var note = event.note;
 	if (event.note.isSustainNote) {
-		note.loadGraphic(Paths.image('stages/school/ui/arrowEnds'), true, 7, 6);
+		note.loadGraphic(Paths.image('noteskins/smm/arrowEnds'), true, 7, 6);
 		note.animation.add("hold", [event.strumID]);
 		note.animation.add("holdend", [4 + event.strumID]);
 	} else {
-		note.loadGraphic(Paths.image('stages/school/ui/arrows-pixels'), true, 17, 17);
+		note.loadGraphic(Paths.image('noteskins/smm/arrows-pixels'), true, 17, 17);
 		note.animation.add("scroll", [4 + event.strumID]);
 	}
 	note.scale.set(daPixelZoom, daPixelZoom);
@@ -38,7 +28,7 @@ function onNoteCreation(event) {
 function onPostNoteCreation(event) {
 	var splashes = event.note;
 	if (pixelSplashes)
-		splashes.splash = "pixel-default";
+		splashes.splash = "splash-pixel";
 }
 
 function onStrumCreation(event) {
@@ -48,7 +38,7 @@ function onStrumCreation(event) {
 	event.cancel();
 
 	var strum = event.strum;
-	strum.loadGraphic(Paths.image('stages/school/ui/arrows-pixels'), true, 17, 17);
+	strum.loadGraphic(Paths.image('noteskins/smm/arrows-pixels'), true, 17, 17);
 	strum.animation.add("static", [event.strumID]);
 	strum.animation.add("pressed", [4 + event.strumID, 8 + event.strumID], 12, false);
 	strum.animation.add("confirm", [12 + event.strumID, 16 + event.strumID], 24, false);
@@ -81,23 +71,15 @@ function onPlayerHit(event:NoteHitEvent) {
 	event.numAntialiasing = false;
 }
 
-/**
- * CAMERA HACKS!!
- */
+
 function postCreate() {
-	if (enablePauseMenu) {
-		PauseSubState.script = 'data/scripts/week6-pause';
-	}
-	if (enableCameraHacks) {
-		camGame.pixelPerfectRender = true;
-		camGame.antialiasing = false;
-
-		makeCameraPixely(camGame);
-		defaultCamZoom /= daPixelZoom;
-	}
-
-	iconP1.antialiasing = false;
-	iconP2.antialiasing = false;
+	scoreTxt.visible = false;
+    missesTxt.visible = false;
+    accuracyTxt.visible = false;
+    healthBar.visible = false;
+    healthBarBG.visible = false;
+    iconP1.visible = false;
+    iconP2.visible = false;
 
 	if (enablePixelGameOver) {
 		gameOverSong = "pixel/gameOver";
@@ -106,72 +88,10 @@ function postCreate() {
 	}
 }
 
-function onStartCountdown() {
-	/*var newNoteCamera = new HudCamera();
-	newNoteCamera.bgColor = 0; // transparent
-	FlxG.cameras.add(newNoteCamera, false);
+//function create(){
+//
+//}
 
-	var pixelSwagWidth = Note.swagWidth + (daPixelZoom - (Note.swagWidth % daPixelZoom));
-
-	for(p in strumLines) {
-		var i = 0;
-		for(str in p.members) {
-			str.x = (FlxG.width * strumOffset) + (pixelSwagWidth * (i - 2));
-			str.x -= str.x % daPixelZoom;
-			i++;
-		}
-	}
-	makeCameraPixely(newNoteCamera);*/
-}
-
-/**
- * Use this to make any camera pixelly (you wont be able to zoom with it anymore!)
- */
-public function makeCameraPixely(cam) {
-	cam.pixelPerfectRender = true;
-	if(!enableCameraHacks) return;
-
-	cam.zoom /= Math.min(FlxG.scaleMode.scale.x, FlxG.scaleMode.scale.y) * daPixelZoom;
-
-	var shad = new CustomShader('pixelZoomShader');
-	cam.addShader(shad);
-
-	pixellyCameras.push(cam);
-	pixellyShaders.push(shad);
-
-	FlxG.game.stage.quality = 2;
-}
-
-function destroy() {
-	// resets the stage quality
-	FlxG.game.stage.quality = oldStageQuality;
-}
-
-function pixelCam(cam) {
-	makeCameraPixely(cam);
-}
-
-var pixellyCameras = [];
-var pixellyShaders = [];
-
-function postUpdate(elapsed) {
-	for(e in pixellyCameras) {
-		if (Std.isOfType(e, HudCamera))
-			e.downscroll = camHUD.downscroll;
-	}
-	if (enableCameraHacks) {
-		for(p in strumLines)
-			p.notes.forEach(function(n) {
-				n.y -= n.y % daPixelZoom;
-				n.x -= n.x % daPixelZoom;
-			});
-	}
-
-	for(e in pixellyCameras) {
-		if (!e.exists) continue;
-		e.zoom = 1 / daPixelZoom / Math.min(FlxG.scaleMode.scale.x, FlxG.scaleMode.scale.y);
-	}
-	for(e in pixellyShaders) {
-		e.pixelZoom = 1 / daPixelZoom / Math.min(FlxG.scaleMode.scale.x, FlxG.scaleMode.scale.y);
-	}
+function update(){
+	health = 1;
 }
