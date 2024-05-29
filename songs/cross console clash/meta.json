@@ -1,0 +1,17 @@
+{
+	"beatsPerMeasure": 4,
+	"opponentModeAllowed": true,
+	"coopAllowed": true,
+	"stepsPerBeat": 4,
+	"bpm": 162,
+	"difficulties": [
+		"mario",
+		"sonic"
+	],
+	"needsVoices": true,
+	"parsedColor": -1,
+	"displayName": "cross console clash",
+	"icon": "Icon",
+	"name": "cross console clash",
+	"color": "#FFFFFF"
+}
