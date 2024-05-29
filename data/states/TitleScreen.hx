@@ -73,6 +73,6 @@ function startIntro()
 
 function update()
 {
-	if  (controls.ACCEPT)	
+	if  (controls.ACCEPT)
 		FlxG.switchState(new MainMenuState());
 }

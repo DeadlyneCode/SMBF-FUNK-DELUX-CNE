@@ -2,6 +2,7 @@ import funkin.backend.utils.CoolUtil;
 
 import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.addons.display.FlxBackdrop;
+import flixel.effects.FlxFlicker;
 import flixel.text.FlxText;
 
 import funkin.menus.ModSwitchMenu;
@@ -10,20 +11,16 @@ import funkin.editors.EditorPicker;
 import funkin.options.OptionsMenu;
 
 var menuItems:Array<String> = ['STORY MODE', 'FREEPLAY', 'OPTIONS', 'EXTRAS'];
-var menuTexts:Array<FlxText> = [];
+var menuTexts:FlxTypedGroup;
 var curSelected = 0;
 var canSwitch = true;
-
-var startX:Float = 10 * 6;
-var startY:Float = 16 * 11;
-var spacing:Float = 12 * 8;
 
 function create(){
 
     CoolUtil.playMenuSong();
 
-    var bg = new FlxBackdrop(Paths.image('menus/title/bg'), 0, 0, true, false, 0, 0);
-    bg.velocity.set(-25, 0);
+    var bg = new FlxBackdrop(Paths.image('menus/title/bg'));
+    bg.velocity.x = -100;
     bg.setGraphicSize(Std.int(bg.width * 6));
 	bg.updateHitbox();
 	bg.antialiasing = false;
@@ -57,17 +54,19 @@ function create(){
 	selector.antialiasing = false;
 	add(selector);
 
-    for (i in 0...menuItems.length)
-        {
-            var menuText:FlxText = new FlxText(startX, startY + i * spacing, 0, menuItems[i], 8);
-            menuText.setFormat(Paths.font("smb1.ttf"), 8, FlxColor.WHITE, "left");
-            menuText.setGraphicSize(Std.int(menuText.width * 6));
-            menuText.setBorderStyle(FlxTextBorderStyle.SHADOW, FlxColor.BLACK, 1, 1);
-            menuText.updateHitbox();
-            add(menuText);
+	menuTexts = new FlxTypedGroup();
+	add(menuTexts);
 
-            menuTexts.push(menuText);
-        }
+    for (i in 0...menuItems.length)
+    {
+        var menuText:FlxText = new FlxText(60, 176 + i * 96, 0, menuItems[i], 8);
+        menuText.setFormat(Paths.font("smb1.ttf"), 8, FlxColor.WHITE, "left");
+        menuText.setGraphicSize(Std.int(menuText.width * 6));
+        menuText.setBorderStyle(FlxTextBorderStyle.SHADOW, FlxColor.BLACK, 1, 1);
+        menuText.updateHitbox();
+        menuText.ID = i;
+        menuTexts.add(menuText);
+    }
 
     changeSelect(0);
 }
@@ -107,14 +106,17 @@ function changeSelect(change)
         curSelected = menuItems.length-1;
 
     thumbnail.animation.frameIndex = curSelected;
-    selector.y = 220 + curSelected * spacing;
+    selector.y = 220 + curSelected * 96;
 }
 
 function confirmSelect()
 {
     canSwitch = false;
 
-    switch(menuItems[curSelected])
+    for (spr in menuTexts)
+        if (curSelected == spr.ID) FlxFlicker.flicker(spr, 1, 0.05);
+
+    new FlxTimer().start(1, () -> switch(menuItems[curSelected])
     {
         case 'STORY MODE':
             FlxG.switchState(new StoryMenuState());
@@ -127,5 +129,5 @@ function confirmSelect()
 
         case 'EXTRAS':
             FlxG.switchState(new FreeplayState());
-    }
+    });
 }

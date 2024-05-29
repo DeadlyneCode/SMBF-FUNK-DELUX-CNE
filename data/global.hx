@@ -1,33 +1,12 @@
 import funkin.backend.utils.NativeAPI;
-import openfl.system.Capabilities;
-import funkin.backend.utils.NdllUtil;
+
 import lime.graphics.Image;
-import funkin.backend.system.framerate.Framerate;
-import flixel.FlxCamera;
-import funkin.backend.utils.DiscordUtil;
 
 FlxG.width = 960;
 FlxG.height = 720;
 FlxG.initialWidth = 960;
 FlxG.initialHeight = 720;
 window.resize(960, 720);
-
-function destroy(){
-  FlxG.width = 1280;
-  FlxG.height = 720;
-  FlxG.initialWidth = 1280;
-  FlxG.initialHeight = 720;
-  window.resize(1280, 720);
-}
-
-static var initialized:Bool = false;
-
-
-
-function new(){
-    //window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image('icon'))));
-}
-
 
 static var redirectStates:Map<FlxState, String> = [
 	TitleState => "TitleScreen",
@@ -43,13 +22,18 @@ function update(elapsed) {
 }
 
 function preStateSwitch() {
-    window.title = "SMBF - DELUXE";
-    FlxG.camera.bgColor = 0xFF000000;
+    window.title = "Super Mario Bros: Funk Mix";
+    window.setIcon(Image.fromBytes(Assets.getBytes(Paths.image('iconEXE'))));
 
-	if (!initialized){
-		initialized = true;
-    }	else
-		for (redirectState in redirectStates.keys())
-			if (FlxG.game._requestedState is redirectState)
-				FlxG.game._requestedState = new ModState(redirectStates.get(redirectState));
+	for (redirectState in redirectStates.keys())
+		if (FlxG.game._requestedState is redirectState)
+			FlxG.game._requestedState = new ModState(redirectStates.get(redirectState));
 }
+
+function destroy(){
+    FlxG.width = 1280;
+    FlxG.height = 720;
+    FlxG.initialWidth = 1280;
+    FlxG.initialHeight = 720;
+    window.resize(1280, 720);
+  }
