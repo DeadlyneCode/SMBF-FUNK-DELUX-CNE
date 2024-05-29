@@ -1,6 +1,8 @@
+import funkin.backend.utils.CoolUtil;
+
+import flixel.text.FlxText.FlxTextBorderStyle;
 import flixel.addons.display.FlxBackdrop;
 import flixel.text.FlxText;
-import flixel.text.FlxText.FlxTextBorderStyle;
 
 import funkin.menus.ModSwitchMenu;
 import funkin.editors.EditorPicker;
@@ -18,12 +20,7 @@ var spacing:Float = 12 * 8;
 
 function create(){
 
-    FlxG.sound.playMusic(Paths.music('fMenu'),0);
-
-    if (FlxG.sound.music != null && FlxG.sound.music.volume == 0) {
-		FlxG.sound.music.fadeIn(0.5, 0, 0.7);
-		FlxG.sound.music.play();
-	}
+    CoolUtil.playMenuSong();
 
     var bg = new FlxBackdrop(Paths.image('menus/title/bg'), 0, 0, true, false, 0, 0);
     bg.velocity.set(-25, 0);
@@ -62,16 +59,17 @@ function create(){
 
     for (i in 0...menuItems.length)
         {
-            var menuTextWhite:FlxText = new FlxText(startX, startY + i * spacing, 0, menuItems[i], 8);
-            menuTextWhite.setFormat(Paths.font("smb1.ttf"), 8, FlxColor.WHITE, "left");
-            menuTextWhite.setGraphicSize(Std.int(menuTextWhite.width * 6));
-            menuTextWhite.setBorderStyle(FlxTextBorderStyle.SHADOW, FlxColor.BLACK, 1, 1);
-            menuTextWhite.updateHitbox();
-            add(menuTextWhite);
+            var menuText:FlxText = new FlxText(startX, startY + i * spacing, 0, menuItems[i], 8);
+            menuText.setFormat(Paths.font("smb1.ttf"), 8, FlxColor.WHITE, "left");
+            menuText.setGraphicSize(Std.int(menuText.width * 6));
+            menuText.setBorderStyle(FlxTextBorderStyle.SHADOW, FlxColor.BLACK, 1, 1);
+            menuText.updateHitbox();
+            add(menuText);
 
-            menuTexts.push(menuTextWhite);
+            menuTexts.push(menuText);
         }
 
+    changeSelect(0);
 }
 
 function update (elapsed)
@@ -108,24 +106,8 @@ function changeSelect(change)
     if (curSelected <0)
         curSelected = menuItems.length-1;
 
-    switch (menuItems[curSelected])
-    {
-        case 'STORY MODE':
-            thumbnail.animation.frameIndex = 0;
-            selector.y = 220;
-
-        case 'FREEPLAY':
-            thumbnail.animation.frameIndex = 1;
-            selector.y = 310;
-        
-        case 'OPTIONS':
-            thumbnail.animation.frameIndex = 2;
-            selector.y = 410;
-
-        case 'EXTRAS':
-            thumbnail.animation.frameIndex = 3;
-            selector.y = 500;
-    }
+    thumbnail.animation.frameIndex = curSelected;
+    selector.y = 220 + curSelected * spacing;
 }
 
 function confirmSelect()
