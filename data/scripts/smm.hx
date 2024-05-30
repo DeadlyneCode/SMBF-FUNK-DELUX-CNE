@@ -1,10 +1,18 @@
 import funkin.game.HudCamera;
 import funkin.backend.scripting.events.NoteHitEvent;
+import flixel.text.FlxTextBorderStyle;
+import flixel.text.FlxTextFormatMarkerPair;
+import flixel.text.FlxTextFormat;
 
 public var pixelNotesForBF = true;
 public var pixelNotesForDad = true;
 public var pixelSplashes = true;
 public var enablePixelUI = true;
+
+
+
+static var daPixelZoom = 6;
+var barY = FlxG.height - (7 * 6);
 
 function onNoteCreation(event) {
 	if (event.note.strumLine == playerStrums && !pixelNotesForBF) return;
@@ -95,8 +103,33 @@ function create(){
 	black2.cameras = [camHUD];
     PlayState.instance.insert(PlayState.instance.members.indexOf(healthBar)+1, black2);
 
+	scoreBar = new FlxText(125, barY, 0, "00000000");
+	scoreBar.autoSize = false;
+	scoreBar.borderSize = 0;
+	scoreBar.setFormat(Paths.font("smb1.ttf"), 8, FlxColor.WHITE, "left");
+	scoreBar.setGraphicSize(Std.int(scoreBar.width * 6));
+	scoreBar.scrollFactor.set();
+	scoreBar.antialiasing = false;
+	scoreBar.cameras = [camHUD];
+    PlayState.instance.insert(PlayState.instance.members.indexOf(black1)+1, scoreBar);
 }
 
 function update(){
 	health = 1;
+
+	scoreBar.text = songScore;
+	//pov tu nique les maths avec cette méthode de feignasse
+	switch (scoreBar.text.length)
+		{
+			case 1:
+				scoreBar.text = "00000" + scoreBar.text;
+			case 2:
+				scoreBar.text = "0000" + scoreBar.text;
+			case 3:
+				scoreBar.text = "000" + scoreBar.text;
+			case 4:
+				scoreBar.text = "00" + scoreBar.text;
+			case 5:
+				scoreBar.text = "0" + scoreBar.text;
+		}
 }
