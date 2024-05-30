@@ -115,8 +115,6 @@ function create(){
 }
 
 function update(){
-	health = 1;
-
 	scoreBar.text = songScore;
 	//pov tu nique les maths avec cette méthode de feignasse
 	switch (scoreBar.text.length)

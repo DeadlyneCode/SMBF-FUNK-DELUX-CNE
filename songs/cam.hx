@@ -17,6 +17,8 @@ function postCreate(){
 }
 
 function update(){
+    health = 1;
+    
     switch(bfstatue) {
         case 3:
             bffire.visible = true;
