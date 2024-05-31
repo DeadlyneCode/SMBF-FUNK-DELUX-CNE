@@ -2,6 +2,6 @@
 <stage zoom="6" name="test chamber" folder="stages/test-chamber/">
 	<sprite name="bg" sprite="bg" antialiasing="false"/>
 	<sprite name="fg" sprite="fg" antialiasing="false"/>
-	<dad y="7" x="29"/>
-	<boyfriend x="95" y="33"/>
+	<dad y="33" x="34"/>
+	<boyfriend x="93" y="31"/>
 </stage>

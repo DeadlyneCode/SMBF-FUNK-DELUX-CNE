@@ -1,0 +1,8 @@
+<!DOCTYPE codename-engine-stage>
+<stage zoom="6" name="airship" folder="stages/airship/">
+<sprite name="bg-bottom" sprite="bg-bottom" antialiasing="false"/>
+	<sprite name="fg" sprite="fg" antialiasing="false"/>
+	<sprite name="cage" sprite="cage" antialiasing="false"/>
+	<dad y="7" x="29"/>
+	<boyfriend x="95" y="33"/>
+</stage>
