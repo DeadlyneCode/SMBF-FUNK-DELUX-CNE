@@ -14,11 +14,51 @@ function postCreate(){
     bfsmall.y = bffire.y - 4;
     camGame.scroll.set(-400, -328);
 	FlxG.camera.followLerp = 0;
+    updateVisibility();
 }
 
 function update(){
     health = 1;
+}
+
+function onPlayerMiss(e) {
+    e.missVolume = 0;
+    if (!invincible) {
+        bfstatue--;
+
+        if (bfstatue > 0) {
+            activateInvincibility();
+        } else {
+            //c'est la mort ici
+        }
+    }
+}
+
+function activateInvincibility() {
+    invincible = true;
+    var flickerTarget;
     
+    switch(bfstatue) {
+        case 2:
+            flickerTarget = bf;
+        case 1:
+            flickerTarget = bfsmall;
+        default:
+            flickerTarget = null;
+    }
+    updateVisibility();
+    if (flickerTarget != null) {
+        FlxFlicker.flicker(flickerTarget, 5, 0.1, true);
+    }
+    var timer = new FlxTimer();
+
+    timer.start(5, function(t:FlxTimer) {
+        invincible = false;
+    });
+}
+
+function updateVisibility() {
+
     switch(bfstatue) {
         case 3:
             bffire.visible = true;
@@ -40,45 +80,6 @@ function update(){
             bf.visible = false;
             bfsmall.visible = false;
             // la mort
-
-    }
-}
-
-function onPlayerMiss() {
-    if (!invincible) {
-        bfstatue--;
-
-        update();
-
-        if (bfstatue > 0) {
-            activateInvincibility();
-        } else {
-            //c'est la mort ici
-        }
-    }
-}
-
-function activateInvincibility() {
-    invincible = true;
-    var flickerTarget;
-    
-    switch(bfstatue) {
-        case 3:
-            flickerTarget = bffire;
-        case 2:
-            flickerTarget = bf;
-        case 1:
-            flickerTarget = bfsmall;
-        default:
-            flickerTarget = null;
     }
 
-    if (flickerTarget != null) {
-        FlxFlicker.flicker(flickerTarget, 5, 0.1, true);
-    }
-    
-    var timer = new FlxTimer();
-    timer.start(5, function(t:FlxTimer) {
-        invincible = false;
-    });
 }

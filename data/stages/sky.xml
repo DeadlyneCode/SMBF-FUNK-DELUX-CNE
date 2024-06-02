@@ -1,0 +1,9 @@
+<!DOCTYPE codename-engine-stage>
+<stage folder="stages/sky/" zoom="6">
+	<gf/>
+	<sprite antialiasing="false" sprite="bg" name="bg" />
+	<dad x="19" y="9.5"/>
+	<bf x="104" y="34"/>
+	<combo/>
+	<sprite antialiasing="false" sprite="clouds" name="clouds"/>
+</stage>

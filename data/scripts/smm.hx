@@ -81,13 +81,7 @@ function onPlayerHit(event:NoteHitEvent) {
 
 
 function postCreate() {
-	scoreTxt.visible = false;
-    missesTxt.visible = false;
-    accuracyTxt.visible = false;
-    healthBar.visible = false;
-    healthBarBG.visible = false;
-    iconP1.visible = false;
-    iconP2.visible = false;
+	scoreTxt.visible = missesTxt.visible = accuracyTxt.visible = healthBar.visible = healthBarBG.visible = iconP1.visible = iconP2.visible = false;
 }
 
 function create(){
